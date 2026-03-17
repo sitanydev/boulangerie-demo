@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boulangerie Dupain — Artisan Boulanger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf6ef;
+      --warm-white: #fff9f2;
+      --gold: #c8983a;
+      --gold-light: #e8b85a;
+      --brown: #3d2610;
+      --brown-mid: #6b3f20;
+      --brown-light: #a0623a;
+      --text: #2a1a0a;
+      --text-muted: #7a5c3e;
+      --border: rgba(200, 152, 58, 0.25);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.5;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(250, 246, 239, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      animation: fadeDown 0.8s ease both;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--brown);
+      letter-spacing: 0.02em;
+    }
+    .nav-logo span { color: var(--gold); font-style: italic; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--brown); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cta {
+      background: var(--brown);
+      color: var(--cream) !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 2px;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--gold) !important; color: var(--brown) !important; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 4rem 6rem 6rem;
+      animation: fadeLeft 1s ease 0.3s both;
+    }
+
+    @keyframes fadeLeft {
+      from { opacity: 0; transform: translateX(-40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge::before {
+      content: '';
+      display: block;
+      width: 28px; height: 1px;
+      background: var(--gold);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--brown);
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 em { font-style: italic; color: var(--gold); display: block; }
+
+    .hero-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.8;
+      max-width: 400px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn-primary {
+      background: var(--brown);
+      color: var(--cream);
+      padding: 0.9rem 2rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--gold); color: var(--brown); transform: translateY(-2px); }
+
+    .btn-secondary {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--brown-mid);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: color 0.3s;
+    }
+    .btn-secondary:hover { color: var(--gold); }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+      animation: fadeRight 1s ease 0.3s both;
+    }
+
+    @keyframes fadeRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .hero-right img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 8s ease;
+    }
+    .hero-right:hover img { transform: scale(1.04); }
+
+    .hero-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(250,246,239,0.15), transparent);
+      pointer-events: none;
+    }
+
+    /* ─── BAND ─── */
+    .band {
+      background: var(--brown);
+      color: var(--cream);
+      padding: 1rem 0;
+      overflow: hidden;
+    }
+
+    .band-track {
+      display: flex;
+      gap: 4rem;
+      animation: scrollband 22s linear infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes scrollband {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .band-item {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-shrink: 0;
+    }
+    .band-item::after { content: '✦'; color: var(--gold); font-size: 0.6rem; }
+
+    /* ─── SECTIONS ─── */
+    section { padding: 6rem; }
+
+    .section-header { text-align: center; margin-bottom: 4rem; }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 700;
+      color: var(--brown);
+      line-height: 1.2;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    .section-divider {
+      width: 60px; height: 2px;
+      background: var(--gold);
+      margin: 1.5rem auto 0;
+    }
+
+    /* ─── SPÉCIALITÉS ─── */
+    #specialites { background: var(--warm-white); }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .product-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s;
+    }
+    .product-card.visible { opacity: 1; transform: translateY(0); }
+    .product-card:hover { box-shadow: 0 20px 50px rgba(61,38,16,0.12); transform: translateY(-6px); }
+
+    .product-img {
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+    }
+    .product-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .product-card:hover .product-img img { transform: scale(1.07); }
+
+    .product-body { padding: 1.5rem; }
+
+    .product-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--brown);
+      margin-bottom: 0.4rem;
+    }
+
+    .product-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .product-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    /* ─── SAVOIR-FAIRE ─── */
+    #savoir-faire {
+      background: var(--brown);
+      color: var(--cream);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    #savoir-faire .section-title { color: var(--cream); }
+
+    .savoir-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(250,246,239,0.75);
+      margin: 1.5rem 0 2rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .stat { border-left: 2px solid var(--gold); padding-left: 1.2rem; }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(250,246,239,0.55);
+      margin-top: 0.3rem;
+    }
+
+    /* ─── PHOTO GRID SAVOIR-FAIRE ─── */
+    .savoir-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 200px 200px;
+      gap: 1rem;
+    }
+
+    .savoir-photos .photo-big {
+      grid-row: 1 / 3;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+
+    .savoir-photos .photo-small { overflow: hidden; border-radius: 2px; }
+
+    .savoir-photos img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .savoir-photos div:hover img { transform: scale(1.05); }
+
+    /* ─── HORAIRES ─── */
+    #horaires { background: var(--cream); }
+
+    .horaires-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .horaires-list { list-style: none; }
+
+    .horaires-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+    }
+    .horaires-list li:last-child { border-bottom: none; }
+
+    .day { color: var(--brown); font-weight: 600; }
+    .time { color: var(--text-muted); }
+    .closed { color: #c0a080; font-style: italic; }
+
+    .horaires-contact {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .contact-item { display: flex; align-items: flex-start; gap: 1rem; }
+
+    .contact-icon {
+      width: 40px; height: 40px;
+      background: var(--brown);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .contact-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.2rem;
+    }
+
+    .contact-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--brown);
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      position: relative;
+      text-align: center;
+      padding: 0;
+      overflow: hidden;
+      min-height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cta-bg {
+      position: absolute;
+      inset: 0;
+    }
+    .cta-bg img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cta-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(40, 18, 5, 0.72);
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 2rem;
+    }
+
+    .cta-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      color: var(--cream);
+      margin-bottom: 1rem;
+    }
+    .cta-content h2 em { color: var(--gold-light); font-style: italic; }
+
+    .cta-content p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: rgba(250,246,239,0.75);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--text);
+      color: rgba(250,246,239,0.5);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+    footer strong { color: var(--gold); }
+
+    /* ─── REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 2rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 5rem 2rem 3rem; }
+      .hero-right { height: 320px; }
+      section { padding: 4rem 2rem; }
+      .products-grid { grid-template-columns: 1fr 1fr; }
+      #savoir-faire { grid-template-columns: 1fr; gap: 3rem; }
+      .horaires-wrapper { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .products-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Du<span>pain</span></div>
+  <ul class="nav-links">
+    <li><a href="#specialites">Spécialités</a></li>
+    <li><a href="#savoir-faire">Savoir-faire</a></li>
+    <li><a href="#horaires">Horaires</a></li>
+    <li><a href="#horaires" class="nav-cta">Nous trouver</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">Artisan boulanger depuis 1987</div>
+    <h1>L'art du pain,<em>à la française.</em></h1>
+    <p class="hero-desc">
+      Chaque matin, nos boulangers pétrissent, façonnent et cuisent avec passion.
+      Des farines sélectionnées, des recettes transmises de génération en génération.
+    </p>
+    <div class="hero-actions">
+      <a href="#specialites" class="btn-primary">Voir nos créations</a>
+      <a href="#horaires" class="btn-secondary">Nous rendre visite →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img
+      src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=900&auto=format&fit=crop&q=80"
+      alt="Boulangerie artisanale - pain frais"
+      loading="eager"
+    />
+  </div>
+</section>
+
+<!-- BAND -->
+<div class="band">
+  <div class="band-track">
+    <span class="band-item">Baguette Tradition</span>
+    <span class="band-item">Pain au Levain</span>
+    <span class="band-item">Croissant Pur Beurre</span>
+    <span class="band-item">Tarte aux Fruits</span>
+    <span class="band-item">Millefeuille</span>
+    <span class="band-item">Pain de Campagne</span>
+    <span class="band-item">Brioche Maison</span>
+    <span class="band-item">Éclair au Chocolat</span>
+    <span class="band-item">Baguette Tradition</span>
+    <span class="band-item">Pain au Levain</span>
+    <span class="band-item">Croissant Pur Beurre</span>
+    <span class="band-item">Tarte aux Fruits</span>
+    <span class="band-item">Millefeuille</span>
+    <span class="band-item">Pain de Campagne</span>
+    <span class="band-item">Brioche Maison</span>
+    <span class="band-item">Éclair au Chocolat</span>
+  </div>
+</div>
+
+<!-- SPÉCIALITÉS -->
+<section id="specialites">
+  <div class="section-header reveal">
+    <span class="section-label">Nos créations</span>
+    <h2 class="section-title">Nos <em>spécialités</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="products-grid">
+
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=600&auto=format&fit=crop&q=80" alt="Baguette Tradition" />
+      </div>
+      <div class="product-body">
+        <div class="product-name">Baguette Tradition</div>
+        <div class="product-desc">Farine de blé française, fermentation lente 18h, croûte dorée et craquante.</div>
+        <div class="product-price">1,20 €</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&auto=format&fit=crop&q=80" alt="Croissant Pur Beurre" />
+      </div>
+      <div class="product-body">
+        <div class="product-name">Croissant Pur Beurre</div>
+        <div class="product-desc">Feuilletage délicat au beurre AOP Charentes-Poitou, 27 couches.</div>
+        <div class="product-price">1,50 €</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=600&auto=format&fit=crop&q=80" alt="Pain de Campagne" />
+      </div>
+      <div class="product-body">
+        <div class="product-name">Pain de Campagne</div>
+        <div class="product-desc">Mie alvéolée, levain naturel, farine complète T80 du moulin local.</div>
+        <div class="product-price">3,80 €</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1619985632461-f33748ef4932?w=600&auto=format&fit=crop&q=80" alt="Brioche Tressée" />
+      </div>
+      <div class="product-body">
+        <div class="product-name">Brioche Tressée</div>
+        <div class="product-desc">Moelleuse et dorée, beurre demi-sel, vanille de Madagascar.</div>
+        <div class="product-price">5,50 €</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?w=600&auto=format&fit=crop&q=80" alt="Tarte aux Fruits" />
+      </div>
+      <div class="product-body">
+        <div class="product-name">Tarte aux Fruits</div>
+        <div class="product-desc">Fruits de saison, crème pâtissière maison, pâte sablée dorée.</div>
+        <div class="product-price">3,50 €</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=600&auto=format&fit=crop&q=80" alt="Éclair au Chocolat" />
+      </div>
+      <div class="product-body">
+        <div class="product-name">Éclair au Chocolat</div>
+        <div class="product-desc">Pâte à choux légère, crème pâtissière, couverture grand cru 70%.</div>
+        <div class="product-price">2,80 €</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SAVOIR-FAIRE -->
+<section id="savoir-faire">
+  <div class="reveal">
+    <span class="section-label" style="color: var(--gold);">Notre histoire</span>
+    <h2 class="section-title">Un savoir-faire <em>transmis</em></h2>
+    <div class="section-divider"></div>
+    <p class="savoir-text">
+      Depuis trois générations, la famille Dupain perpétue les gestes ancestraux de la boulangerie artisanale.
+      Ici, rien n'est laissé au hasard : le choix des farines, le temps de fermentation, la température du four.
+      Chaque pain est une œuvre unique.
+    </p>
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-number">37</div>
+        <div class="stat-label">ans d'expérience</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Artisanal</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">4h</div>
+        <div class="stat-label">Lever chaque matin</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">+30</div>
+        <div class="stat-label">Références</div>
+      </div>
+    </div>
+  </div>
+  <div class="savoir-photos reveal">
+    <div class="photo-big">
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80" alt="Boulanger artisan au travail" />
+    </div>
+    <div class="photo-small">
+      <img src="https://images.unsplash.com/photo-1574085733277-851d9d856a3a?w=400&auto=format&fit=crop&q=80" alt="Fournée de pains" />
+    </div>
+    <div class="photo-small">
+      <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&auto=format&fit=crop&q=80" alt="Viennoiseries fraîches" />
+    </div>
+  </div>
+</section>
+
+<!-- HORAIRES -->
+<section id="horaires">
+  <div class="section-header reveal">
+    <span class="section-label">Venir nous voir</span>
+    <h2 class="section-title">Horaires & <em>Contact</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="horaires-wrapper">
+    <ul class="horaires-list reveal">
+      <li><span class="day">Lundi</span><span class="time">7h00 – 13h30 / 15h30 – 19h30</span></li>
+      <li><span class="day">Mardi</span><span class="time closed">Fermé</span></li>
+      <li><span class="day">Mercredi</span><span class="time">7h00 – 19h30</span></li>
+      <li><span class="day">Jeudi</span><span class="time">7h00 – 19h30</span></li>
+      <li><span class="day">Vendredi</span><span class="time">7h00 – 19h30</span></li>
+      <li><span class="day">Samedi</span><span class="time">7h00 – 19h30</span></li>
+      <li><span class="day">Dimanche</span><span class="time">7h30 – 13h00</span></li>
+    </ul>
+    <div class="horaires-contact reveal">
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Adresse</div>
+          <div class="contact-value">14 rue du Four, 75011 Paris</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <div class="contact-label">Téléphone</div>
+          <div class="contact-value">01 23 45 67 89</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value">bonjour@boulangerie-dupain.fr</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-bg">
+    <img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=1400&auto=format&fit=crop&q=80" alt="Boulangerie ambiance" />
+  </div>
+  <div class="cta-content reveal">
+    <h2>Venez goûter <em>la différence.</em></h2>
+    <p>Chaque matin, nous préparons des pains frais pour vous. À demain ?</p>
+    <a href="#horaires" class="btn-primary">Voir les horaires →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <strong>Boulangerie Dupain</strong> — Artisan Boulanger-Pâtissier — Tous droits réservés</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal, .product-card').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.product-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.1}s`;
+  });
+</script>
+
+</body>
+</html>
